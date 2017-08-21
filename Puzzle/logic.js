@@ -8,7 +8,6 @@ function generateMap() {
     createGameField();
 
     do {
-        console.log("check");
         currentMap = shuffleArray(currentMap);
     } while (isTaskSolve())
 }

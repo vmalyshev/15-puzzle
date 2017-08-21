@@ -32,7 +32,7 @@ Window {
         function checkNeighbors(index) {
             var selectObj = gameFieldModel.get(index);
 
-            if (selectObj.value === 0)
+            if (!selectObj.value)
                 return;
 
             var currentRow = Math.floor(index / Logic.size);
