@@ -7,18 +7,10 @@ var currentMap;
 function generateMap() {
     createGameField();
 
-    var arrayLength = currentMap.length - 1;
-
-    for (var num = 1; num < currentMap.length; num++) {
-        var rndPosition = randomIntFromInterval(0, arrayLength);
-
-        var filteredArray = currentMap.filter(function(item) {
-            return item.value === 0;
-        });
-
-        filteredArray[rndPosition].value = num;
-        arrayLength -= 1;
-    }
+    do {
+        console.log("check");
+        currentMap = shuffleArray(currentMap);
+    } while (isTaskSolve())
 }
 
 function createGameField() {
@@ -28,14 +20,41 @@ function createGameField() {
             var currentObj = {
                 row: i,
                 column: j,
-                value: 0
+                value: i * size + j
             };
             currentMap[i*size + j] = currentObj;
         }
     }
 }
 
-function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
 }
 
+function isTaskSolve() {
+    var sum = 0;
+    var zeroValueItemPosition;
+
+    for (var i = 0; i < size * size; i++) {
+        if (!currentMap[i].value) {
+            zeroValueItemPosition = i;
+            continue;
+        }
+
+        for (var j = i; j < size * size; j++) {
+            if ((currentMap[i] < currentMap[j]) && currentMap[j].value !== 0) {
+                sum += 1;
+            }
+        }
+    }
+
+    var rowWithZeroValue = zeroValueItemPosition / 2 + 1;
+    var result = ((sum + rowWithZeroValue) % 2 == 0);
+    return result;
+}

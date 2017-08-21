@@ -22,7 +22,7 @@ Item {
         }
 
         Component.onCompleted: {
-           rect.color = (value === 0 ? 'tomato': 'green');
+           rect.color = (value === 0 ? 'transparent': 'green');
         }
 
         MouseArea {

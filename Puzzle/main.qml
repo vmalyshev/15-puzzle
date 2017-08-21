@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 import "logic.js" as Logic
 
@@ -34,27 +35,36 @@ Window {
             if (selectObj.value === 0)
                 return;
 
-            var currentRow = selectObj.row;
-            var currentColumn = selectObj.column;
+            var currentRow = Math.floor(index / Logic.size);
+            var currentColumn = index % Logic.size;
 
             var leftIndex = index - 1
-            if (checkIndex(leftIndex)) {
+            var leftRow = Math.floor(leftIndex / Logic.size);
+            if (leftRow == currentRow && checkIndex(leftIndex)) {
                 swap(index, leftIndex)
+                return;
             }
 
             var rightIndex = index + 1
-            if (checkIndex(rightIndex)) {
+            var rightRow = Math.floor(rightIndex / Logic.size);
+
+            if (rightRow == currentRow && checkIndex(rightIndex)) {
                 swap(index, rightIndex)
+                return;
             }
 
             var upIndex = index - Logic.size
-            if (checkIndex(upIndex)) {
+            var upColumn = upIndex % Logic.size;
+            if (currentColumn == upColumn && checkIndex(upIndex)) {
                 swap(index, upIndex)
+                return;
             }
 
             var downIndex = index + Logic.size
-            if (checkIndex(downIndex)) {
+            var downColumn = downIndex % Logic.size;
+            if (currentColumn == downColumn && checkIndex(downIndex)) {
                 swap(index, downIndex)
+                return;
             }
         }
 
@@ -109,8 +119,7 @@ Window {
                     gameFieldModel.checkNeighbors(num);
 
                     if (gameFieldModel.isUserWin()) {
-                        console.log("you win")
-                        gameFieldModel.addData();
+                        msgCongratulation.visible = true;
                     }
                 }
             }
@@ -136,5 +145,15 @@ Window {
         onClicked: {
             gameFieldModel.addData();
         }
+    }
+
+    MessageDialog {
+        id: msgCongratulation
+        title: "Notification"
+        text: "You win"
+        onAccepted: {
+            gameFieldModel.addData();
+        }
+        Component.onCompleted: visible = false
     }
 }
