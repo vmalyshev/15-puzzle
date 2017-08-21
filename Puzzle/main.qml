@@ -91,7 +91,7 @@ Window {
 
         function isUserWin() {
             for (var i = 0; i < Logic.currentMap.length - 1; i++) {
-                if (gameFieldModel.get(i) !== (i + 1)) {
+                if (gameFieldModel.get(i).value !== (i + 1)) {
                     return false;
                 }
             }
